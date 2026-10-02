@@ -813,13 +813,13 @@ export const db = {
         updatedAt: dateIso(row.updated_at),
         modules: jsonValue(row.modules, { encomendasAvailable: true }),
       }));
-      return { items: items as Array<T & { id: string }>, nextToken: result.rows.length > limit ? 'more' : undefined };
+      return { items: items as unknown as Array<T & { id: string }>, nextToken: result.rows.length > limit ? 'more' : undefined };
     }
 
     if (name === 'stores') {
       const result = await storeRows(undefined, limit);
       return {
-        items: result.items as Array<T & { id: string }>,
+        items: result.items as unknown as Array<T & { id: string }>,
         nextToken: result.hasMore ? 'more' : undefined,
       };
     }
@@ -827,7 +827,7 @@ export const db = {
     if (name === 'store_templates') {
       const result = await listTemplates(limit);
       return {
-        items: result.items as Array<T & { id: string }>,
+        items: result.items as unknown as Array<T & { id: string }>,
         nextToken: result.hasMore ? 'more' : undefined,
       };
     }
@@ -838,28 +838,28 @@ export const db = {
     if (dynamic.kind === 'ingredients') {
       const result = await listIngredients(dynamic.storeId, limit);
       return {
-        items: result.items as Array<T & { id: string }>,
+        items: result.items as unknown as Array<T & { id: string }>,
         nextToken: result.hasMore ? 'more' : undefined,
       };
     }
     if (dynamic.kind === 'recipes') {
       const result = await loadRecipes(dynamic.storeId, undefined, limit);
       return {
-        items: result.items as Array<T & { id: string }>,
+        items: result.items as unknown as Array<T & { id: string }>,
         nextToken: result.hasMore ? 'more' : undefined,
       };
     }
     if (dynamic.kind === 'products') {
       const result = await listProducts(dynamic.storeId, limit);
       return {
-        items: result.items as Array<T & { id: string }>,
+        items: result.items as unknown as Array<T & { id: string }>,
         nextToken: result.hasMore ? 'more' : undefined,
       };
     }
     if (dynamic.kind === 'sales') {
       const result = await listSales(dynamic.storeId, limit);
       return {
-        items: result.items as Array<T & { id: string }>,
+        items: result.items as unknown as Array<T & { id: string }>,
         nextToken: result.hasMore ? 'more' : undefined,
       };
     }
@@ -880,7 +880,7 @@ export const db = {
         values: jsonValue(row.values, {}),
         createdAt: dateIso(row.created_at),
         createdBy: row.created_by ? String(row.created_by) : '',
-      })) as Array<T & { id: string }>,
+      })) as unknown as Array<T & { id: string }>,
       nextToken: result.rows.length > limit ? 'more' : undefined,
     };
   },
@@ -891,11 +891,11 @@ export const db = {
     if (name === 'stores') {
       const result = await storeRows(ids, Math.max(ids.length, 1));
       const map = new Map(result.items.map(item => [String(item.id), item]));
-      return ids.map(id => (map.get(id) as T & { id: string }) ?? null);
+      return ids.map(id => (map.get(id) as unknown as T & { id: string }) ?? null);
     }
 
     if (name === 'store_templates') {
-      return (await getTemplates(ids)) as Array<(T & { id: string }) | null>;
+      return (await getTemplates(ids)) as unknown as Array<(T & { id: string }) | null>;
     }
 
     if (name === 'system') {
@@ -908,15 +908,15 @@ export const db = {
     if (!dynamic) throw new Error('Tabela não suportada: ' + name);
 
     if (dynamic.kind === 'ingredients') {
-      return (await getIngredients(dynamic.storeId, ids)) as Array<(T & { id: string }) | null>;
+      return (await getIngredients(dynamic.storeId, ids)) as unknown as Array<(T & { id: string }) | null>;
     }
     if (dynamic.kind === 'recipes') {
       const result = await loadRecipes(dynamic.storeId, ids, Math.max(ids.length, 1));
       const map = new Map(result.items.map(item => [item.id, item]));
-      return ids.map(id => (map.get(id) as T & { id: string }) ?? null);
+      return ids.map(id => (map.get(id) as unknown as T & { id: string }) ?? null);
     }
     if (dynamic.kind === 'products') {
-      return (await getProducts(dynamic.storeId, ids)) as Array<(T & { id: string }) | null>;
+      return (await getProducts(dynamic.storeId, ids)) as unknown as Array<(T & { id: string }) | null>;
     }
     if (dynamic.kind === 'sales') {
       const result = await pool.query(
@@ -925,7 +925,7 @@ export const db = {
       );
       const list = await listSales(dynamic.storeId, 1000);
       const map = new Map(list.items.map(item => [item.id, item]));
-      return ids.map(id => (map.get(id) as T & { id: string }) ?? null);
+      return ids.map(id => (map.get(id) as unknown as T & { id: string }) ?? null);
     }
 
     const result = await pool.query(
@@ -947,7 +947,7 @@ export const db = {
         },
       ])
     );
-    return ids.map(id => (map.get(id) as T & { id: string }) ?? null);
+    return ids.map(id => (map.get(id) as unknown as T & { id: string }) ?? null);
   },
 
   async add(name: string, records: JsonRecord[]): Promise<Array<string | null>> {
