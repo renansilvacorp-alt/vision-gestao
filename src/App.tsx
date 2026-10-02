@@ -402,9 +402,8 @@ function App() {
     setLoading(true);
     try {
       await auth.signIn({ scope: 'openid email profile offline_access' });
-      const user = await auth.getUser();
-      if (!user) throw new Error('Sessão de autenticação não foi persistida.');
-      await loadSession();
+      // O login social redireciona o navegador. A sessão será carregada
+      // normalmente quando a aplicação voltar do provedor.
     } catch (cause) {
       setLoading(false);
       const code =
