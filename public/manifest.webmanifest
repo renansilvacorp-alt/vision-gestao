@@ -1,0 +1,17 @@
+{
+  "name": "Vision - Gestão Integrada",
+  "short_name": "Vision",
+  "description": "Gestão integrada multiempresa",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f8fa",
+  "theme_color": "#0f766e",
+  "icons": [
+    {
+      "src": "/vision-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
