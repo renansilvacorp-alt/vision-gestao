@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext, useContext, useRef, useState, type ReactNode } from 'react';
 import { AlertTriangle, X } from 'lucide-react';
 
